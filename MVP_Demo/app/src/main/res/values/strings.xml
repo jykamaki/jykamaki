@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MVP_Demo</string>
+    <string name="venue_locator">Venue Locator. Enter search keyword.</string>
+    <string name="distance">Dist:</string>
+    <string name="venue">Venue:</string>
+    <string name="address">Address:</string>
+</resources>
