@@ -8,4 +8,6 @@ import java.util.List;
 public interface IVenueListPresenter {
     void setSearchString(String s);
     void publishVenueList(List<VenueData> venueDataList);
+    void setModel(IModel model);
+    void setView(IMainView view);
 }

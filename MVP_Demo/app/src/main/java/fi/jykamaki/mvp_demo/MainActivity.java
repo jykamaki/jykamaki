@@ -1,7 +1,7 @@
 package fi.jykamaki.mvp_demo;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,6 +14,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements IMainView {
 
     private VenueListPresenter venueListPresenter;
+    private Model model;
     private EditText editText;
     private VenueDataAdapter listAdapter;
     private List<VenueData> venueDatas;
@@ -32,15 +33,19 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         listView.setAdapter(listAdapter);
         venueListPresenter = new VenueListPresenter();
         venueListPresenter.setView(this);
+        model = new Model(this, venueListPresenter);
+        venueListPresenter.setModel(model);
         addTextWatcher();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        model.finish();
         venueListPresenter.setView(null);
         if (isFinishing()) {
             venueListPresenter = null;
+            model = null;
         }
     }
 
@@ -50,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         listAdapter.setData(venueDatas);
         listAdapter.notifyDataSetChanged();
     }
-
 
     private void addTextWatcher() {
         editText.addTextChangedListener(new TextWatcher() {
@@ -73,6 +77,5 @@ public class MainActivity extends AppCompatActivity implements IMainView {
                 }
             }
         });
-
     }
 }

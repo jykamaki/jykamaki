@@ -38,26 +38,29 @@ public class Model implements IModel, LocationListener {
     private static final String QUERY = "&query=";
 
     private HttpURLConnection conn;
-    private VenueListPresenter venueListPresenter;
+    private IVenueListPresenter venueListPresenter;
     private LocationManager locationManager;
     private String latitude = "0";
     private String longitude = "0";
     private String searchString;
 
-    public Model(Context context, VenueListPresenter presenter) {
+    public Model(Context context, IVenueListPresenter presenter) {
+        Location location = null;
         venueListPresenter = presenter;
         // Get the location manager
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         // Define the criteria how to select the location provider -> use default
         Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(provider);
+        if (locationManager != null) {
+            String provider = locationManager.getBestProvider(criteria, false);
+            location = locationManager.getLastKnownLocation(provider);
+            locationManager.requestLocationUpdates(provider, LOCATION_UPDATE_INTERVAL,
+                    LOCATION_UPDATE_DISTANCE, this);
+        }
         // Initialize the location fields
         if (location != null) {
             onLocationChanged(location);
         }
-        locationManager.requestLocationUpdates(provider, LOCATION_UPDATE_INTERVAL,
-                LOCATION_UPDATE_DISTANCE, this);
     }
 
     @Override

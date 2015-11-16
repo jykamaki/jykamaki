@@ -6,28 +6,18 @@ import java.util.List;
  * Created by YR on 12.11.2015.
  */
 public class VenueListPresenter implements IVenueListPresenter {
-    private MainActivity view;
-    private Model model;
+    private IMainView view;
+    private IModel model;
 
     public VenueListPresenter() {
     }
 
-    public void setView(MainActivity view) {
+    @Override
+    public void setView(IMainView view) {
         this.view = view;
-        if (view == null) {
-            // we are finishing
-            if (model != null) {
-                model.finish();
-                model = null;
-            }
-        } else {
-            // create model
-            if (model == null) {
-                model = new Model(view, this);
-            }
-        }
     }
 
+    @Override
     public void publishVenueList(List<VenueData> venueDataList) {
         if (view != null) {
             view.publishVenueList(venueDataList);
@@ -35,7 +25,14 @@ public class VenueListPresenter implements IVenueListPresenter {
     }
 
     @Override
+    public void setModel(IModel model) {
+        this.model = model;
+    }
+
+    @Override
     public void setSearchString(String s) {
-        model.setSearchString(s);
+        if (model != null) {
+            model.setSearchString(s);
+        }
     }
 }
